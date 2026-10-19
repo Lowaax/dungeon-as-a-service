@@ -5,17 +5,21 @@ Lancer le serveur depuis la racine du projet :
 Puis ouvrir http://127.0.0.1:8000/docs
 """
 
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 from app.database import create_db_and_tables
 
-# TODO (palier 1) : importez ici vos modèles de tables pour que SQLModel les connaisse
-# from app.models.hero import Hero  # noqa: F401
+# Modèles de tables importés pour que SQLModel les connaisse avant create_all
+from app.models.hero import Hero  # noqa: F401
+from app.models.player import Player  # noqa: F401
+from app.routes import auth, heroes, leaderboard
 
-# TODO : importez vos routers
-# from app.routes import heroes
+# Journalisation des déplacements et des combats dans la console
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
 
 
 @asynccontextmanager
@@ -28,15 +32,21 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Dungeon as a Service",
     description="Moteur de jeu de rôle textuel — Pixel Crypt",
-    version="0.1.0",
+    version="1.0.0",
     lifespan=lifespan,
 )
 
-# TODO : branchez vos routers
-# app.include_router(heroes.router)
+app.include_router(auth.router)
+app.include_router(heroes.router)
+app.include_router(leaderboard.router)
 
 
-@app.get("/health", tags=["Système"])
+class HealthRead(BaseModel):
+    status: str
+    message: str
+
+
+@app.get("/health", tags=["Système"], response_model=HealthRead)
 def health() -> dict:
     """Vérifie que le serveur répond."""
     return {"status": "ok", "message": "Le donjon vous attend..."}
