@@ -56,17 +56,16 @@ Arrêtez le serveur et supprimez le fichier `dungeon.db` : il sera recréé au p
 
 ## Notre rendu
 
-- **Membres du groupe :** _à compléter_
-- **Lien du dépôt Git :** _à compléter_
+- **Membres du groupe :** Léo Dupuy, Florin Hamelin
+- **Lien du dépôt Git :** https://github.com/Lowaax/dungeon-as-a-service
 - **Palier atteint :** 4
 - **Bonus réalisés :**
   - B-1 client terminal : `client/play.py` (register, login, create, heroes, look, move, attack, rest, leaderboard ; token dans `.token`)
   - B-2 classement : `GET /leaderboard` (public, top 10 : vainqueurs d'abord, puis or)
   - B-3 tests : `pytest` (18 tests, base SQLite en mémoire : 201, 422, 400, 401, 403, 404, 409 et règles du domaine)
-  - B-4 PostgreSQL : `docker-compose.yml` + variable `DATABASE_URL` (driver `psycopg` ajouté aux dépendances)
+  - B-4 PostgreSQL : `docker-compose.yml` + variable `DATABASE_URL`, sans modification du code (driver `psycopg` ajouté aux dépendances) — testé : création de compte, de héros et déplacement persistés dans PostgreSQL 16
   - B-5 journalisation : logger `dungeon` (création, déplacements, tours de combat, repos, victoire)
 - **Ce qui ne fonctionne pas / difficultés :**
-  - Le bonus PostgreSQL n'a pas pu être testé en conditions réelles (Docker non démarré sur le poste) ; le code n'a pas besoin d'être modifié, seul `DATABASE_URL` change.
   - Le coup critique du voleur est aléatoire (probabilité 1/3 à chaque coup), pas strictement « un coup sur trois ».
 
 ### Choix techniques
