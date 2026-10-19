@@ -1,0 +1,24 @@
+# BONUS — PostgreSQL
+# 1. docker compose up -d
+# 2. Définir DATABASE_URL avant de lancer l'API :
+#    PowerShell : $env:DATABASE_URL = "postgresql+psycopg://dungeon:dungeon@localhost:5432/dungeon"
+#    bash       : export DATABASE_URL=postgresql+psycopg://dungeon:dungeon@localhost:5432/dungeon
+# 3. fastapi dev app/main.py
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dungeon
+      POSTGRES_PASSWORD: dungeon
+      POSTGRES_DB: dungeon
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dungeon"]
+      interval: 5s
+      retries: 5
+
+volumes:
+  pgdata:
